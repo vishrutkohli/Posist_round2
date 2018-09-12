@@ -39,7 +39,8 @@ Functions:
                      
 ## Instructions to run 
 - Select the option you want by providing the particular input to as shown when you first run the module
-
+## Screenshot
+![alt text](https://i.imgur.com/SiFF8FE.png)
 ## Deployment
 - As of now this is just a simple python app/module but can be easily converted to a scalable backend using Django 
 
