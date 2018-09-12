@@ -72,10 +72,18 @@ class TreeChain:
 tree_chain=TreeChain()
 genesis_node=Treenode(tree_chain,"Posist",10,"NULL","NULL",0)
 tree_chain.setGenesisNode(genesis_node)
+tree_chain=TreeChain()
+print("Generating Genesis Node.....")
+genesis_node=Treenode(tree_chain,"Posist",10,"NULL","NULL",0)
+tree_chain.setGenesisNode(genesis_node)
 
 ## create a new node of the genesis node
 b=Treenode(tree_chain,"Vishrut Kohli",9,genesis_node.node_id,genesis_node.node_id,0)
-genesis_node.addNode(b)
+genesis_node.addNode(b);
+c=Treenode(tree_chain,"Nipun Arora",8,genesis_node.node_id,genesis_node.node_id,0)
+b.addNode(c)
+d=Treenode(tree_chain,"Shivam Kohli",7,genesis_node.node_id,genesis_node.node_id,0)
+c.addNode(d)
 print "The length for the longest chain at genesis node is :"
 print tree_chain.getLongestChain(genesis_node)
 
