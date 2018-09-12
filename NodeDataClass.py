@@ -3,16 +3,20 @@ import base64
 
 class NodeData:
 	__secret_key = "posististhebest7"
-	def __init__(self, value, owner_id , owner_name ):
+	def __init__(self, value, owner_name , owner_id ):
+		self.padding=0
 		self.encrypted_string = self.encryption_of_key(value, owner_id , owner_name)
 		
   
 	def encryption_of_key(self , value, owner_id , owner_name):
 
 		cipher = AES.new(NodeData.__secret_key,AES.MODE_ECB) 
-		encoded = base64.b64encode(cipher.encrypt(str(owner_id) + "-" + str(owner_name) + "-"+str(value)))
-
-		print "The value is encrypted"
+		stra=str(owner_id) + "-" + str(owner_name) + "-"+str(value)
+		while len(stra)%16!=0:
+			stra=stra+'/'
+			self.padding=self.padding+1
+		encoded = base64.b64encode(cipher.encrypt(stra))
+		print "The value is encrypted" 
 
 		return encoded
 
@@ -28,11 +32,14 @@ class NodeData:
 
 
 	def decryption_of_key(self):
-		cipher = AES.new(self.secret_key,AES.MODE_ECB) 
-		decoded = cipher.decrypt(baes64.b64decode(self.encrypted_string))
-		print " the value is decrypted"
-
-		return decoded
+		cipher = AES.new(NodeData.__secret_key,AES.MODE_ECB) 
+		decoded = cipher.decrypt(base64.b64decode(self.encrypted_string))
+		##print " the value is decrypted"
+		##print decoded
+		if self.padding>0:
+			return decoded[:-self.padding]
+		else:
+			return decoded
 
 	def get_data(self):
 
@@ -63,24 +70,25 @@ class NodeData:
 		return 1    
 
 	def get_owner_id(self):
-		decrypted_key = decryption_of_key()
+		decrypted_key = self.decryption_of_key()
 		splitted_key = decrypted_key.split('-')
 
 		return splitted_key[0]
 
 	def get_owner_name(self):
-		decrypted_key = decryption_of_key()
+		decrypted_key = self.decryption_of_key()
 		splitted_key = decrypted_key.split('-')
 
 		return splitted_key[1]
 
 	def get_value(self):
-		decrypted_key = decryption_of_key()
+		decrypted_key = self.decryption_of_key()
 		splitted_key = decrypted_key.split('-')
+		##print splitted_key
 
 		return splitted_key[2]      
 
 
-A = NodeData( 5 , "1234" , "vishrut")
-		
+# A = NodeData( 5 , "1234" , "vishrut")
+# print(A.get_value())
 		  

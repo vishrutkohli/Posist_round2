@@ -6,31 +6,35 @@ from NodeDataClass import NodeData
 ## Creating a class for the tree node 
 class Treenode:
 	def __init__(self,tree_chain,owner_name,value,parent_node,genesis_node,node_num):
-		print("Creating a tree node for owner : ",owner_name)
+		print "Creating a tree node for owner : ",owner_name
 		self.time_stamp=str(datetime.now())
 		self.node_id=uuid.uuid4().hex
-		self.data=NodeData(self.time_stamp,self.owner_name,self.owner_id)
+		self.data=NodeData(value,owner_name,self.node_id)
 		self.parent_id=parent_node
 		self.node_num=node_num
 		self.child_list=[]
 		self.genesis_node_id=genesis_node
-		self.hash=hashlib.sha512(b''+str(self.time_stamp)+str(owner_name)+str(self.node_id)+str(self.data.getString)+str(self.parent_id)+str(self.genesis_node_id))
+		self.hash=hashlib.sha512(b''+str(self.time_stamp)+str(owner_name)+str(self.node_id)+str(self.data.get_data)+str(self.parent_id)+str(self.genesis_node_id))
 		self.value_carryover=value
 		self.tree_chain=tree_chain
 
 	def isValidNode(self,Node):
-		if Node.data.getValue()>self.value_carryover:
+		# print Node.data.get_value()
+		# print self.value_carryover
+		if int(Node.data.get_value())>int(self.value_carryover):
 			return False
 		else:
+			print "this"
 			return True
 
 	def addNode(self,Node):
 		print("Adding a new node......")
-		if(isValidNode(Node)):
+		if(self.isValidNode(Node)):
 			self.child_list.append(Node)
-			self.value_carryover=self.value_carryover-Node.data.getValue()
-			self.tree_chain.owner_map[Node.data.getOwnerName]=Node
+			self.value_carryover=self.value_carryover-int(Node.data.get_value())
+			self.tree_chain.owner_map[Node.data.get_owner_name]=Node
 			self.tree_chain.node_map[Node.node_id]=Node
+			print "New Node Added for "+Node.data.get_owner_name()+" under the parent "+self.data.get_owner_name()
 		else:
 			print("The node is invalid")
 
@@ -42,12 +46,15 @@ class Treenode:
 		pass
 
 class TreeChain:
-	def __init__(self,genesis_node):
-		self.genesis_node=genesis_node
+	def __init__(self):
+		self.genesis_node=None
 		self.node_map={}
 		self.owner_map={}
-		self.owner_map[genesis_node.data.getOwnerName()]=genesis_node
-		self.node_map[genesis_node_id]=genesis_node
+	
+	def setGenesisNode(self,genesis_node):
+		self.genesis_node=genesis_node
+		self.owner_map[genesis_node.data.get_owner_name()]=genesis_node
+		self.node_map[genesis_node.node_id]=genesis_node
 
 	def getLongestChain(self,node):
 		if(len(node.child_list)==0):
@@ -55,14 +62,20 @@ class TreeChain:
 		else:
 			max_num=-1;
 			for i in node.child_list:
-				count=self.dfsUtil(i)
+				count=self.getLongestChain(i)
 				if(count>max_num):
 					max_num=count
 			return max_num+1;
 
 
+## Some Pilot Code 
+tree_chain=TreeChain()
+genesis_node=Treenode(tree_chain,"Posist",10,"NULL","NULL",0)
+tree_chain.setGenesisNode(genesis_node)
 
-
-
-
+## create a new node of the genesis node
+b=Treenode(tree_chain,"Vishrut Kohli",9,genesis_node.node_id,genesis_node.node_id,0)
+genesis_node.addNode(b)
+print "The length for the longest chain at genesis node is :"
+print tree_chain.getLongestChain(genesis_node)
 
