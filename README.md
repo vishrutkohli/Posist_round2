@@ -13,6 +13,8 @@ pip install pycrypto (By running the following command)
 
 The library contains two modules 
 1.) ***NodeData*** 
+
+
 *This contains all the functions which will work on the data. 
 functions:*
 - Encryption of key(Task 4)
@@ -26,7 +28,10 @@ functions:*
 - Get value(internal function)
                      
 2.) ***CustomTree***  - This contains all the functions which will work on the Treechain. 
+
 Functions:
+
+
 **Class TreeNode**
 - is Valid Node(internal Function)
 - add Node(Task 3)
