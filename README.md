@@ -37,8 +37,6 @@ Functions:
 **Class TreeChain:**
 - Get longest chain(Task 8 and9)               
                      
-## Instructions to run 
-- Select the option you want by providing the particular input to as shown when you first run the module
 ## Screenshot
 ![alt text](https://i.imgur.com/SiFF8FE.png)
 ## Deployment
